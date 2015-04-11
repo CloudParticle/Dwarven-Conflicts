@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class PlayerMovement : MonoBehaviour {
-    private Animator anim;              // Reference to the animator component.
     private float moveSpeed = 3f;
 
     // Use this for initialization
@@ -12,11 +11,6 @@ public class PlayerMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
-	}
-
-    void FixedUpdate () {
-        // Cache the inputs.
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
@@ -24,6 +18,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     void movement (float h, float v) {
-        transform.Translate(h * moveSpeed * Time.deltaTime, v * moveSpeed * Time.deltaTime, 0);
+        float forwardMovement = h * moveSpeed * Time.deltaTime;        
+        transform.Translate(forwardMovement, 0, 0);
     }
 }
