@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof (Controller2D))]
+[RequireComponent (typeof (PlayerController))]
 public class Player : MonoBehaviour {
 
 	public float jumpHeight = 4;
@@ -15,10 +15,10 @@ public class Player : MonoBehaviour {
 	Vector3 velocity;
 	float velocityXSmoothing;
 
-	Controller2D controller;
+	PlayerController controller;
 
 	void Start() {
-		controller = GetComponent<Controller2D> ();
+		controller = GetComponent<PlayerController> ();
 
 		gravity = -(2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;

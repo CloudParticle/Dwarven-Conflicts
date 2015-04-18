@@ -2,7 +2,7 @@
 using System.Collections;
 
 [RequireComponent (typeof (BoxCollider2D))]
-public class Controller2D : MonoBehaviour {
+public class PlayerController : MonoBehaviour {
 
 	public LayerMask collisionMask;
 
