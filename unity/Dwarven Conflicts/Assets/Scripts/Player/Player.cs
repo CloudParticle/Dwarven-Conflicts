@@ -33,19 +33,17 @@ public class Player : MonoBehaviour {
 	}
 
 	void Update() {
+        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
 		if (controller.collisions.above || controller.collisions.below) {
 			velocity.y = 0;
 		}
 
-		Vector2 input = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
-
 		if (Input.GetKeyDown (KeyCode.Space) && controller.collisions.below) {
 			velocity.y = jumpVelocity;
 		}
 
-        if (Input.GetButton("Fire1") && Time.time > nextFire)
-        {
+        if (Input.GetButton("Fire1") && Time.time > nextFire) {
             nextFire = Time.time + fireRate;
             Instantiate(dynamite, dynamiteSpawn.position, dynamiteSpawn.rotation);
         }
