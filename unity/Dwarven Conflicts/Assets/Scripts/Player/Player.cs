@@ -5,14 +5,13 @@ using System.Collections;
 [RequireComponent(typeof(ScoreControl))]
 public class Player : MonoBehaviour {
     //Variables
-	private float jumpHeight = 2;
+	private float jumpHeight = 2.5f;
 	private float timeToJumpApex = 0.3f;
 	float accelerationTimeAirborne = 0.2f;
 	float accelerationTimeGrounded = 0.1f;
 	float moveSpeed = 6f;
 
     //Game variables
-    //ScoreControl logCount;
 	float gravity;
 	float jumpVelocity;
 	Vector3 velocity;
