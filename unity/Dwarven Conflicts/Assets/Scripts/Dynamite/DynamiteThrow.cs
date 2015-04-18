@@ -8,7 +8,7 @@ public class DynamiteThrow : MonoBehaviour {
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.AddForce(Vector3.right * speed);
+        rb.AddForce(transform.right * speed);
     }
 	
 	// Update is called once per frame

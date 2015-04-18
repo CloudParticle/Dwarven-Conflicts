@@ -19,8 +19,8 @@ public class Player : MonoBehaviour {
     //Dynamite
     public GameObject dynamite;
     public Transform dynamiteSpawn;
-    public float fireRate = 0.5f;
-    private float nextFire = 0.0f;
+    public float fireRate = 1f;
+    private float nextFire = 0f;
 
 	PlayerController controller;
 
