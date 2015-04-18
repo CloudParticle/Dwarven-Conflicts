@@ -2,6 +2,7 @@
 using System.Collections;
 
 [RequireComponent (typeof (PlayerController))]
+[RequireComponent(typeof(ScoreControl))]
 public class Player : MonoBehaviour {
     //Variables
 	private float jumpHeight = 2;
@@ -11,6 +12,7 @@ public class Player : MonoBehaviour {
 	float moveSpeed = 6f;
 
     //Game variables
+    //ScoreControl logCount;
 	float gravity;
 	float jumpVelocity;
 	Vector3 velocity;
@@ -23,9 +25,11 @@ public class Player : MonoBehaviour {
     private float nextFire = 0f;
 
 	PlayerController controller;
+    ScoreControl logScore;
 
 	void Start() {
 		controller = GetComponent<PlayerController> ();
+        logScore = GetComponent<ScoreControl>();
         dynamiteSpawn = GetComponent<Transform>();
 
 		gravity = -(2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);
@@ -46,6 +50,7 @@ public class Player : MonoBehaviour {
         if (Input.GetButton("Fire1") && Time.time > nextFire) {
             nextFire = Time.time + fireRate;
             Instantiate(dynamite, dynamiteSpawn.position, dynamiteSpawn.rotation);
+            logScore.subtractScore(0);
         }
 
 		float targetVelocityX = input.x * moveSpeed;
