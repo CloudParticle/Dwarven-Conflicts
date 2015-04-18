@@ -4,6 +4,7 @@ using System.Collections;
 public class DynamiteThrow : MonoBehaviour {
     private Rigidbody2D rb;
     private float speed = 300.0f;
+    private float timeLeft = 5.0f;
 
     void Start()
     {
@@ -12,7 +13,12 @@ public class DynamiteThrow : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
-	
-	}
+    void Update()
+    {
+        timeLeft -= Time.deltaTime;
+        if (timeLeft < 0) {
+            Destroy(gameObject);
+            print("EXPLOSION!");
+        }
+    }
 }
