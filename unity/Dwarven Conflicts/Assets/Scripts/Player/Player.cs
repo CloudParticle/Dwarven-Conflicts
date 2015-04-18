@@ -26,7 +26,6 @@ public class Player : MonoBehaviour {
 
 	void Start() {
 		controller = GetComponent<PlayerController> ();
-        //dynamite = gameObject.GetComponent<Dynamite>();
         dynamiteSpawn = GetComponent<Transform>();
 
 		gravity = -(2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);
@@ -48,7 +47,7 @@ public class Player : MonoBehaviour {
         if (Input.GetButton("Fire1") && Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;
-            //Instantiate(dynamite, dynamiteSpawn.position, dynamiteSpawn.rotation);
+            Instantiate(dynamite, dynamiteSpawn.position, dynamiteSpawn.rotation);
         }
 
 		float targetVelocityX = input.x * moveSpeed;
