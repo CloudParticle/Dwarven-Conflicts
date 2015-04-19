@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class Explosion : MonoBehaviour {
-    private float timeLeft = 3.0f;
+    private bool hasExploded = false;
+    private float timeLeft = 0.5f;
 	
 	void Update () {
         timeLeft -= Time.deltaTime;
@@ -15,8 +16,9 @@ public class Explosion : MonoBehaviour {
         if (other.gameObject.tag == "Platform") {
             print("Exploding on: " + other.gameObject.name);
             Destroy(other.gameObject);
-        } if (other.gameObject.tag == "Player") {
+        } if (other.gameObject.tag == "Player" && !hasExploded) {
             print(other.gameObject.name + " been hit by an explosion! FUUUCK!");
+            hasExploded = true;
         }
     }
 }
