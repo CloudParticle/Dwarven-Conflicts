@@ -19,9 +19,13 @@ public class Player : MonoBehaviour {
 
     //Dynamite
     public GameObject dynamite;
+
     public Transform dynamiteSpawn;
     public float fireRate = 1f;
     private float nextFire = 0f;
+
+    //Platform
+    public GameObject platform;
 
 	PlayerController controller;
     ScoreControl logScore;
@@ -49,6 +53,17 @@ public class Player : MonoBehaviour {
         if (Input.GetButton("Fire1") && Time.time > nextFire) {
             nextFire = Time.time + fireRate;
             Instantiate(dynamite, dynamiteSpawn.position, dynamiteSpawn.rotation);
+        }
+
+        if (Input.GetButton("Fire2") && Time.time > nextFire) {
+            nextFire = Time.time + fireRate;
+            int gridSize = 2;
+            Vector3 pos = new Vector3(
+                Mathf.Round(dynamiteSpawn.position.x/gridSize) * gridSize,
+                Mathf.Round(dynamiteSpawn.position.y/gridSize) * gridSize,
+                Mathf.Round(dynamiteSpawn.position.z/gridSize) * gridSize
+            );
+            Instantiate(platform, pos, dynamiteSpawn.rotation);
             logScore.subtractScore(0);
         }
 
