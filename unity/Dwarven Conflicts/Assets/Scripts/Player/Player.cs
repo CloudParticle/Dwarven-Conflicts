@@ -36,15 +36,23 @@ public class Player : MonoBehaviour {
 	PlayerController controller;
     ScoreControl logScore;
 
-	void Start() {
-		controller = GetComponent<PlayerController> ();
+    //Flag
+    private GameObject flag;
+
+    void Awake () {
+        controller = GetComponent<PlayerController>();
         logScore = GetComponent<ScoreControl>();
         dynamiteSpawn = GetComponent<Transform>();
+        flag = Resources.Load("Flag", typeof(GameObject)) as GameObject;
+    }
 
+	void Start() {
 		gravity = -(2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 
         tester = (GameObject)Instantiate(platformContainer);
+        Instantiate(flag, new Vector3(0f, 0f, 0f), Quaternion.identity);
+
         updateContainerPos();
     }
 
