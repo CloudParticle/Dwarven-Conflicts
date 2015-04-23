@@ -25,7 +25,11 @@ public class Player : MonoBehaviour {
     private float nextFire = 0f;
 
     //Platform
+    private int gridSize = 2;
     public GameObject platform;
+    public GameObject platformContainer;
+
+    private GameObject tester;
 
 	PlayerController controller;
     ScoreControl logScore;
@@ -37,7 +41,18 @@ public class Player : MonoBehaviour {
 
 		gravity = -(2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
-	}
+
+        tester = (GameObject)Instantiate(platformContainer);
+        updateContainerPos();
+    }
+
+    void updateContainerPos() {
+        tester.transform.position = new Vector3(
+            Mathf.Round(transform.position.x / gridSize) * gridSize,
+            Mathf.Round(transform.position.y / gridSize) * gridSize,
+            Mathf.Round(transform.position.z / gridSize) * gridSize
+        );
+    }
 
 	void Update() {
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
@@ -56,20 +71,25 @@ public class Player : MonoBehaviour {
         }
 
         if (Input.GetButton("Fire2") && Time.time > nextFire) {
+            //TODO Instantiate new platform that can only make platform inside its own container.
             nextFire = Time.time + fireRate;
-            int gridSize = 2;
-            Vector3 pos = new Vector3(
-                Mathf.Round(dynamiteSpawn.position.x/gridSize) * gridSize,
-                Mathf.Round(dynamiteSpawn.position.y/gridSize) * gridSize,
-                Mathf.Round(dynamiteSpawn.position.z/gridSize) * gridSize
-            );
-            Instantiate(platform, pos, dynamiteSpawn.rotation);
-            logScore.subtractScore(0);
+            
+            if (logScore.subtractScore(0) > 0) {
+                Vector3 pos = new Vector3(
+                    Mathf.Round(dynamiteSpawn.position.x / gridSize) * gridSize,
+                    Mathf.Round(dynamiteSpawn.position.y / gridSize) * gridSize,
+                    Mathf.Round(dynamiteSpawn.position.z / gridSize) * gridSize
+                );
+
+                Instantiate(platform, pos, dynamiteSpawn.rotation);
+            }   
         }
 
 		float targetVelocityX = input.x * moveSpeed;
 		velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
 		velocity.y += gravity * Time.deltaTime;
 		controller.Move (velocity * Time.deltaTime);
+
+        updateContainerPos();
 	}
 }

@@ -5,7 +5,7 @@ public class Explosion : MonoBehaviour {
     private bool hasExploded = false;
     private float timeLeft = 0.5f;
 	
-	void Update () {
+	void FixedUpdate () {
         timeLeft -= Time.deltaTime;
         if (timeLeft < 0) {
             Destroy(gameObject);
