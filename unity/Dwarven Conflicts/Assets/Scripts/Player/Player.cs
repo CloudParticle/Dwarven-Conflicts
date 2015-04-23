@@ -63,7 +63,7 @@ public class Player : MonoBehaviour {
 			velocity.y = 0;
 		}
 
-		if (Input.GetKeyDown (KeyCode.Space) && controller.collisions.below) {
+		if (Input.GetButton("Jump") && controller.collisions.below) {
 			velocity.y = jumpVelocity;
 		}
 
@@ -79,7 +79,7 @@ public class Player : MonoBehaviour {
             if (logScore.subtractScore(playerNr) > 0) {
                 Vector3 pos = new Vector3(
                     Mathf.Round(transform.position.x / gridSize) * gridSize,
-                    Mathf.Round(transform.position.y / gridSize) * gridSize,
+                    Mathf.Round(transform.position.y - 1),
                     Mathf.Round(transform.position.z / gridSize) * gridSize
                 );
 
