@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class ScoreControl : MonoBehaviour {
+    //TODO: Set score for specific player.
     public Text log;
     private int score = 15;
 
@@ -22,7 +23,7 @@ public class ScoreControl : MonoBehaviour {
 
     public int subtractScore (int player) {
         if (score >  0) {
-            score -= 1;
+            score--;
         }
         renderScore();
         return score;

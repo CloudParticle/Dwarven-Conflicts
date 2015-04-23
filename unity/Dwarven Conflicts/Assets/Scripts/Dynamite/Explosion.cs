@@ -12,13 +12,13 @@ public class Explosion : MonoBehaviour {
         }
 	}
 
-    void OnTriggerStay2D (Collider2D other) {
+    void OnTriggerEnter2D (Collider2D other) {
         if (other.gameObject.tag == "Platform") {
-            print("Exploding on: " + other.gameObject.name);
-            Destroy(other.gameObject);
-        } if (other.gameObject.tag == "Player" && !hasExploded) {
-            print(other.gameObject.name + " been hit by an explosion! FUUUCK!");
-            hasExploded = true;
+            Platform platform = other.gameObject.GetComponent<Platform>();
+            platform.reduceLife();
+            print("Exploded on: " + other.gameObject.name);
+        } if (other.gameObject.tag == "Player") {
+            print(other.gameObject.tag + " been hit by an explosion! FUUUCK!");
         }
     }
 }

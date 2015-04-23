@@ -83,7 +83,7 @@ public class Player : MonoBehaviour {
                     Mathf.Round(transform.position.z / gridSize) * gridSize
                 );
 
-                Instantiate(platform, pos, dynamiteSpawn.rotation);
+                Instantiate(platform, pos, transform.rotation);
             }   
         }
 

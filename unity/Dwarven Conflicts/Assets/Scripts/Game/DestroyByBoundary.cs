@@ -3,7 +3,7 @@ using System.Collections;
 
 public class DestroyByBoundary : MonoBehaviour {
 
-	// Destroy everything that leaves the trigger
+	// Destroys everything that leaves the trigger area.
 	void OnTriggerExit2D(Collider2D other) 
 	{
 		Debug.Log("Out of bounds: "+ other.tag);
