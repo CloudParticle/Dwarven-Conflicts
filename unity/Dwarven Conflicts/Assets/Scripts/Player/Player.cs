@@ -11,6 +11,8 @@ public class Player : MonoBehaviour {
 	float accelerationTimeGrounded = 0.1f;
 	float moveSpeed = 6f;
 
+    public int playerNr = 0;
+
     //Game variables
 	float gravity;
 	float jumpVelocity;
@@ -73,12 +75,12 @@ public class Player : MonoBehaviour {
         if (Input.GetButton("Fire2") && Time.time > nextFire) {
             //TODO Instantiate new platform that can only make platform inside its own container.
             nextFire = Time.time + fireRate;
-            
-            if (logScore.subtractScore(0) > 0) {
+
+            if (logScore.subtractScore(playerNr) > 0) {
                 Vector3 pos = new Vector3(
-                    Mathf.Round(dynamiteSpawn.position.x / gridSize) * gridSize,
-                    Mathf.Round(dynamiteSpawn.position.y / gridSize) * gridSize,
-                    Mathf.Round(dynamiteSpawn.position.z / gridSize) * gridSize
+                    Mathf.Round(transform.position.x / gridSize) * gridSize,
+                    Mathf.Round(transform.position.y / gridSize) * gridSize,
+                    Mathf.Round(transform.position.z / gridSize) * gridSize
                 );
 
                 Instantiate(platform, pos, dynamiteSpawn.rotation);
