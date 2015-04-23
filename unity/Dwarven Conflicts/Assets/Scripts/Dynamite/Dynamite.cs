@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DynamiteThrow : MonoBehaviour {
+public class Dynamite : MonoBehaviour {
     private Rigidbody2D rb;
     public GameObject explosion;
-    public Renderer explosionRender;
 
     private bool isExploding = false;
     private float speed = 300.0f;
