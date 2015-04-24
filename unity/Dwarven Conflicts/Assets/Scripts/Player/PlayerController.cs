@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour {
 	public CollisionInfo collisions;
 
 	void Start() {
-		collider = GetComponent<BoxCollider2D> ();
+		collider = GetComponent<BoxCollider2D>();
 		CalculateRaySpacing ();
 	}
 

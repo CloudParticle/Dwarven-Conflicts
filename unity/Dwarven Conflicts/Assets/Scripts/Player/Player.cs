@@ -4,21 +4,24 @@ using System.Collections;
 [RequireComponent (typeof (PlayerController))]
 [RequireComponent(typeof(ScoreControl))]
 public class Player : MonoBehaviour {
-    //Player
-    public int playerId = 0;
-    
     //Variables
 	private float jumpHeight = 2.5f;
 	private float timeToJumpApex = 0.3f;
-	float accelerationTimeAirborne = 0.2f;
-	float accelerationTimeGrounded = 0.1f;
-	float moveSpeed = 6f;
+	private float accelerationTimeAirborne = 0.2f;
+	private float accelerationTimeGrounded = 0.1f;
+	private float moveSpeed = 5f;
+    private float spawnTime = 4f;
 
     //Game variables
 	float gravity;
 	float jumpVelocity;
 	Vector3 velocity;
 	float velocityXSmoothing;
+
+    //Sets on initPlayer
+    public int playerId = 0;
+    private Vector3 startPosition;
+    private bool isAlive = true;
 
     //Dynamite
     public GameObject dynamite;
@@ -42,7 +45,8 @@ public class Player : MonoBehaviour {
     }
 
     //Use as constructor who recieve playerId.
-    public void initPlayer(int id) {
+    public void initPlayer(Vector3 startPos, int id) {
+        startPosition = startPos;    
         playerId = id;
 		gravity = -(2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
@@ -61,10 +65,30 @@ public class Player : MonoBehaviour {
         );
     }
 
+    public void setAlive (bool status) {
+        isAlive = status;
+    }
+
 	void Update() {
-        inputListeners();
-        updateContainerPos();
-	}
+        if (isAlive) {
+            inputListeners();
+            updateContainerPos();
+        } else {
+            resetPlayer();
+        }
+    }
+
+    void resetPlayer () {
+        spawnTime -= Time.deltaTime;
+
+        if (!isAlive && spawnTime < 0) {
+            spawnTime = 4f; //Reset spawn time.
+            setAlive(true);
+            print(gameObject.tag + " respawned.");
+        } else {
+            transform.position = startPosition;
+        }
+    }
 
     void inputListeners () {
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));

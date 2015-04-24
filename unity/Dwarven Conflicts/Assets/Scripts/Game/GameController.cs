@@ -13,11 +13,11 @@ public class GameController: MonoBehaviour {
         addPlayer(new Vector3(11f, 0f, 0f), 1);
 	}
 
-    void addPlayer (Vector3 position, int playerId) {
+    void addPlayer (Vector3 startPosition, int playerId) {
         GameObject obj = Resources.Load("Player", typeof(GameObject)) as GameObject;
-        playerObj = Instantiate(obj, Vector3.zero, Quaternion.identity) as GameObject;
+        playerObj = Instantiate(obj, startPosition, Quaternion.identity) as GameObject;
         player = playerObj.GetComponent<Player>();
-        player.initPlayer(playerId);
+        player.initPlayer(startPosition, playerId);
     }
 	
 	void Update () {

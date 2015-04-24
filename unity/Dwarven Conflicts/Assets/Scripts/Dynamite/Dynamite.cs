@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(SphereCollider))]
 public class Dynamite : MonoBehaviour {
     private Rigidbody2D rb;
     public GameObject explosion;
@@ -26,7 +27,7 @@ public class Dynamite : MonoBehaviour {
     }
 
     void explode () {
-        BoxCollider2D collider      = explosion.GetComponent<BoxCollider2D>();
+        SphereCollider collider      = explosion.GetComponent<SphereCollider>();
         GameObject explodingCollider = (GameObject) GameObject.Instantiate(explosion, gameObject.transform.position, Quaternion.identity);
          
         Destroy(gameObject);
