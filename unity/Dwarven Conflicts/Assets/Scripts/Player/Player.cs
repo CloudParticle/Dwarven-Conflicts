@@ -5,7 +5,7 @@ using System.Collections;
 [RequireComponent(typeof(ScoreControl))]
 public class Player : MonoBehaviour {
     //Variables
-	private float jumpHeight = 2.5f;
+	private float jumpHeight = 2.6f;
 	private float timeToJumpApex = 0.3f;
 	private float accelerationTimeAirborne = 0.2f;
 	private float accelerationTimeGrounded = 0.1f;
@@ -30,6 +30,8 @@ public class Player : MonoBehaviour {
 
     //Platform
     private int gridSize = 2;
+    private float platformHeight = 0.13f;
+
     public GameObject platform;
     public GameObject platformContainer;
     private GameObject platformWrapper;
@@ -40,6 +42,7 @@ public class Player : MonoBehaviour {
     void Awake () {
         controller = GetComponent<PlayerController>();
         score = GetComponent<ScoreControl>();
+        platform = Resources.Load("Platform") as GameObject;
     }
 
     //Use as constructor who recieve playerId.
@@ -49,16 +52,23 @@ public class Player : MonoBehaviour {
 		gravity = -(2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 
-        platformWrapper = (GameObject)Instantiate(platformContainer);
+        platformWrapper = (GameObject)Instantiate(platformContainer, Vector3.zero, transform.rotation);
         updateContainerPos();
     }
 
     void updateContainerPos() {
+        Vector3 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
         platformWrapper.transform.position = new Vector3(
             Mathf.Round(transform.position.x / gridSize) * gridSize,
+            Mathf.Round(mouse.y / gridSize) * gridSize, 0f
+        );
+
+        /*platformWrapper.transform.position = new Vector3(
+            Mathf.Round(transform.position.x / gridSize) * gridSize + gridSize,
             Mathf.Round(transform.position.y / gridSize) * gridSize,
             Mathf.Round(transform.position.z / gridSize) * gridSize
-        );
+        );*/
     }
 
     public int getPlayerId () {
@@ -110,15 +120,14 @@ public class Player : MonoBehaviour {
             //TODO Instantiate new platform that can only make platform inside its own container.
             nextFire = Time.time + fireRate;
 
-            if (score.subtractScore(playerId) > 0) {
-                Vector3 pos = new Vector3(
-                    Mathf.Round(transform.position.x / gridSize) * gridSize,
-                    Mathf.Round(transform.position.y - 1),
-                    Mathf.Round(transform.position.z / gridSize) * gridSize
-                );
-
-                Instantiate(platform, pos, transform.rotation);
-            }
+            //if (score.subtractScore(playerId) > 0) {
+            
+                Instantiate(platform, new Vector3(
+                    platformWrapper.transform.position.x,
+                    platformWrapper.transform.position.y - (1 + platformHeight),
+                    platformWrapper.transform.position.z
+                ), transform.rotation);
+            //}
         }
 
         float targetVelocityX = input.x * moveSpeed;
