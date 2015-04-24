@@ -9,7 +9,7 @@ public class ScoreControl : MonoBehaviour {
 
     void Start () {
         initScore();
-        renderScore();
+        //renderScore();
     }
 
     void initScore () {

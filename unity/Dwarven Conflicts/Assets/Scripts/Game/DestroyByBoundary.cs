@@ -1,16 +1,36 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(Flag))]
+[RequireComponent(typeof(Player))]
 public class DestroyByBoundary : MonoBehaviour {
 
 	// Destroys objects that leaves the surrounding game area.
 	void OnTriggerExit2D (Collider2D other) {
-        if (other.tag == "Player") {
-            other.gameObject.GetComponent<Player>().setAlive(false);
-        } else {
-            Destroy(other.gameObject);
+        switch (other.tag) {       
+            case "Player":
+                resetPlayer(other.gameObject);
+                break;            
+            case "Flag":
+                other.gameObject.GetComponent<Flag>().resetFlag();
+                break;
+            default:
+                //Destroy(other.gameObject, 0.5f);
+                break;
         }
-
 		Debug.Log("Out of bounds: "+ other.tag);
 	}
+
+    void resetPlayer (GameObject other) {
+        Player player = other.GetComponent<Player>();
+        GameObject[] flags = GameObject.FindGameObjectsWithTag("Flag");
+
+        foreach (GameObject flag in flags) {
+            Flag playerFlag = flag.GetComponent<Flag>();
+            if (playerFlag.captured && playerFlag.owner != player.getPlayerId()) {
+                playerFlag.resetFlag();
+            }
+        }
+        player.setAlive(false);
+    }
 }

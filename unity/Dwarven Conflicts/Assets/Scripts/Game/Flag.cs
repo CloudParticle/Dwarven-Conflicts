@@ -2,9 +2,9 @@
 using System.Collections;
 
 public class Flag : MonoBehaviour {
-    private bool captured = false;
+    public bool captured = false;
     public Vector3 startPosition;
-    private int owner;
+    public int owner;
     private Player currentPlayer;
 
     public void initFlag (Vector3 startPos, int ownerId) {
@@ -42,8 +42,9 @@ public class Flag : MonoBehaviour {
         );
     }
 
-    void resetFlag () {
-        print("Player took back the flag!");         
+    public void resetFlag () {
+        print("Player took back the flag!");
+        captured = false;
         gameObject.transform.position = startPosition;
     }
 }
