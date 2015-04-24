@@ -36,12 +36,10 @@ public class Player : MonoBehaviour {
 
 	private PlayerController controller;
     private ScoreControl score;
-    private GameObject flag;
 
     void Awake () {
         controller = GetComponent<PlayerController>();
         score = GetComponent<ScoreControl>();
-        flag = Resources.Load("Flag", typeof(GameObject)) as GameObject;
     }
 
     //Use as constructor who recieve playerId.
@@ -52,8 +50,6 @@ public class Player : MonoBehaviour {
 		jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 
         platformWrapper = (GameObject)Instantiate(platformContainer);
-        Instantiate(flag, Vector3.zero, Quaternion.identity);
-
         updateContainerPos();
     }
 
@@ -63,6 +59,10 @@ public class Player : MonoBehaviour {
             Mathf.Round(transform.position.y / gridSize) * gridSize,
             Mathf.Round(transform.position.z / gridSize) * gridSize
         );
+    }
+
+    public int getPlayerId () {
+        return playerId;
     }
 
     public void setAlive (bool status) {
