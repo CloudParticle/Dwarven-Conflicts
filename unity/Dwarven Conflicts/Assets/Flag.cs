@@ -7,12 +7,6 @@ public class Flag : MonoBehaviour {
     private int owner;
     private Player currentPlayer;
 
-    private Rigidbody2D storedRb;
-
-    void Awake () {
-        storedRb = gameObject.GetComponent<Rigidbody2D>();
-    }
-
     public void initFlag (Vector3 startPos, int ownerId) {
         startPosition = startPos;
         owner = ownerId;
@@ -43,7 +37,7 @@ public class Flag : MonoBehaviour {
     void followPlayer () {
         gameObject.transform.position = new Vector3(
             currentPlayer.transform.position.x + 0.55f,
-            currentPlayer.transform.position.y + 1.5f,
+            currentPlayer.transform.position.y + 1f,
             currentPlayer.transform.position.z
         );
     }
