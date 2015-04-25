@@ -15,7 +15,7 @@ public class GameController: MonoBehaviour {
 	void Start () {
         //Player
         addPlayer(new Vector3(-10f, 0f, 0f), 0);
-        addPlayer(new Vector3(12f, 0f, 0f), 1);
+        //addPlayer(new Vector3(12f, 0f, 0f), 1);
 
         //Flag
         addFlag(new Vector3(-6f, -2f, 0f), 0);
