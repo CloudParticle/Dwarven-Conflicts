@@ -58,18 +58,9 @@ public class Player : MonoBehaviour {
 
     void updateContainerPos() {
         Vector3 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        print("y: " + Mathf.Round(transform.position.y));
-
-        float res = Mathf.Round(Mathf.Clamp(mouse.x, (transform.position.x - gridSize), (transform.position.x + gridSize)) / gridSize) * gridSize;
-        
-        print("!naked x: " + res);
-
-        print("minMax: " +
-            Mathf.Round(Mathf.Clamp(res, (transform.position.x - gridSize), (transform.position.x + gridSize)) / gridSize) * gridSize
-        );
 
         platformWrapper.transform.position = new Vector3(
-            Mathf.Round(Mathf.Clamp(res, (transform.position.x - gridSize), (transform.position.x + gridSize)) / gridSize) * gridSize,
+            Mathf.Round(Mathf.Clamp(mouse.x, (transform.position.x - gridSize), (transform.position.x + gridSize)) / gridSize) * gridSize,
             Mathf.Round(Mathf.Clamp(mouse.y, (transform.position.y - gridSize), (transform.position.y +  gridSize)) / gridSize) * gridSize, 
             0f
         );
