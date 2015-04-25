@@ -1,15 +1,22 @@
 fileFormatVersion: 2
-guid: d5f5353a7f85aa74584919345bcef4f8
-timeCreated: 1429996484
+guid: 9cd0706ba51f009448e46d373567e524
+timeCreated: 1429997411
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: Cube
+    100000: Body
+    100002: //RootNode
+    100004: Head
+    400000: Body
+    400002: //RootNode
+    400004: Head
+    2300000: Body
+    2300002: Head
+    3300000: Body
+    3300002: Head
+    4300000: Head
+    4300002: Body
     7400000: Default Take
     9500000: //RootNode
   materials:

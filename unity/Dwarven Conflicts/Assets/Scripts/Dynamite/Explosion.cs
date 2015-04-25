@@ -19,12 +19,13 @@ public class Explosion : MonoBehaviour {
 	}
 
     void moveHitPlayer () {
-        float velocityX = Random.Range(-12f, 12f),
-              velocityY = Random.Range(3f, 5f);
+        float velocityX = Random.Range(-3f, 3f),
+              velocityY = Random.Range(3f, 6f);
 
         hitPlayerObj.GetComponent<Rigidbody2D>().AddForce(
-            new Vector2(velocityX, 200f * velocityY)
+            new Vector2(100f * velocityX, 200f * velocityY)
         );
+        print("Player been hit by an explosion! FUUUCK!");
     }
 
     void OnTriggerEnter2D (Collider2D other) {
@@ -35,7 +36,6 @@ public class Explosion : MonoBehaviour {
         } if (other.gameObject.tag == "Player") {
             hitPlayerObj = other.gameObject;
             hitPlayer = true;
-            print(other.gameObject.tag + " been hit by an explosion! FUUUCK!");
         }
     }
 }
