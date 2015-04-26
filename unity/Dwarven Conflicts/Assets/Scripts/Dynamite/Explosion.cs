@@ -33,7 +33,7 @@ public class Explosion : MonoBehaviour {
             Platform platform = other.gameObject.GetComponent<Platform>();
             platform.reduceLife();
             print("Exploded on: " + other.gameObject.name);
-        } if (other.gameObject.tag == "Player") {
+        } if (other.gameObject.tag == "Player" || other.gameObject.tag == "Dynamite") {
             hitPlayerObj = other.gameObject;
             hitPlayer = true;
         }
