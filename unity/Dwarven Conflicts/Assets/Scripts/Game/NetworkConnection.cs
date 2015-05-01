@@ -18,6 +18,8 @@ public class NetworkConnection : Photon.MonoBehaviour {
     }
 
     void OnJoinedRoom () {
+        PhotonNetwork.automaticallySyncScene = true; 
+
         GameObject play = Resources.Load("Player") as GameObject;
         GameObject dwarf = PhotonNetwork.Instantiate(play.name, new Vector3(-10f, 0f, 0f), Quaternion.identity, 0);
         

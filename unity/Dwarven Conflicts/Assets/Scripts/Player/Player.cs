@@ -89,7 +89,7 @@ public class Player : Photon.MonoBehaviour {
         isAlive = status;
     }
 
-	void Update() {
+	void FixedUpdate() {
         if (!photonView.isMine) {
             transform.position = Vector3.Lerp(transform.position, this.correctPlayerPos, Time.deltaTime * 5);
             transform.rotation = Quaternion.Lerp(transform.rotation, this.correctPlayerRot, Time.deltaTime * 5);
@@ -129,7 +129,8 @@ public class Player : Photon.MonoBehaviour {
 
         if (Input.GetButton("Fire1") && Time.time > nextFire) {
             nextFire = Time.time + fireRate;
-            Instantiate(dynamite, gameObject.transform.position, gameObject.transform.rotation);
+            //Instantiate(dynamite, gameObject.transform.position, gameObject.transform.rotation);
+            PhotonNetwork.Instantiate(dynamite.name, gameObject.transform.position, gameObject.transform.rotation, 0);
         }
 
         if (Input.GetButton("Fire2") && Time.time > nextFire) {
@@ -137,11 +138,11 @@ public class Player : Photon.MonoBehaviour {
             nextFire = Time.time + fireRate;
 
             //if (score.subtractScore(playerId) > 0) {
-                Instantiate(platform, new Vector3(
+                PhotonNetwork.Instantiate(platform.name, new Vector3(
                     platformWrapper.transform.position.x,
                     platformWrapper.transform.position.y - (1 + platformHeight),
                     platformWrapper.transform.position.z
-                ), transform.rotation);
+                ), transform.rotation, 0);
             //}
         }
 

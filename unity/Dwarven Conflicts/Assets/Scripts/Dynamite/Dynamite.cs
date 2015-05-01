@@ -27,9 +27,7 @@ public class Dynamite : MonoBehaviour {
     }
 
     void explode () {
-        SphereCollider collider      = explosion.GetComponent<SphereCollider>();
-        GameObject explodingCollider = Instantiate(explosion, gameObject.transform.position, Quaternion.identity) as GameObject;
-        explodingCollider.layer = 20;
-        Destroy(gameObject);
+        PhotonNetwork.Instantiate(explosion.name, gameObject.transform.position, Quaternion.identity, 0);
+        PhotonNetwork.Destroy(gameObject);
     }
 }

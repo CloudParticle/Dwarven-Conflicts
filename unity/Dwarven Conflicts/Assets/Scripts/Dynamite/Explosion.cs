@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Explosion : MonoBehaviour {
+public class Explosion : Photon.MonoBehaviour {
     private bool hitPlayer = false;
     private float timeLeft = 0.5f;
     private GameObject hitPlayerObj;
@@ -9,7 +9,7 @@ public class Explosion : MonoBehaviour {
 	void FixedUpdate () {
         timeLeft -= Time.deltaTime;
         if (timeLeft < 0) {
-            Destroy(gameObject);
+            PhotonNetwork.Destroy(gameObject);
         }
 
         if (hitPlayer) {

@@ -15,7 +15,7 @@ public class DestroyByBoundary : MonoBehaviour {
                 other.gameObject.GetComponent<Flag>().resetFlag();
                 break;
             default:
-                //Destroy(other.gameObject, 0.5f);
+                PhotonNetwork.Destroy(other.gameObject);
                 break;
         }
 		Debug.Log("Out of bounds: "+ other.tag);
