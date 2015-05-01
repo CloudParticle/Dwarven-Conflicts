@@ -3,7 +3,7 @@ using System.Collections;
 
 [RequireComponent (typeof (PlayerController))]
 [RequireComponent(typeof(ScoreControl))]
-public class Player : MonoBehaviour {
+public class Player : Photon.MonoBehaviour {
     //Variables
 	private float jumpHeight = 2.6f;
 	private float timeToJumpApex = 0.3f;
@@ -32,17 +32,23 @@ public class Player : MonoBehaviour {
     private int gridSize = 2;
     private float platformHeight = 0.13f;
 
-    public GameObject platform;
-    public GameObject platformContainer;
+    private GameObject platform;
+    private GameObject platformContainer;
     private GameObject platformWrapper;
+
 
 	private PlayerController controller;
     private ScoreControl score;
+
+    //Photon
+    private Vector3 correctPlayerPos;
+    private Quaternion correctPlayerRot;
 
     void Awake () {
         controller = GetComponent<PlayerController>();
         score = GetComponent<ScoreControl>();
         platform = Resources.Load("Platform") as GameObject;
+        platformContainer = Resources.Load("PlatformArea") as GameObject;
     }
 
     //Use as constructor who recieve playerId.
@@ -53,6 +59,7 @@ public class Player : MonoBehaviour {
 		jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 
         platformWrapper = (GameObject)Instantiate(platformContainer, Vector3.zero, transform.rotation);
+        resetPlayer();
         updateContainerPos();
     }
 
@@ -83,20 +90,24 @@ public class Player : MonoBehaviour {
     }
 
 	void Update() {
-        if (isAlive) {
+        if (!photonView.isMine) {
+            transform.position = Vector3.Lerp(transform.position, this.correctPlayerPos, Time.deltaTime * 5);
+            transform.rotation = Quaternion.Lerp(transform.rotation, this.correctPlayerRot, Time.deltaTime * 5);
+        }
+        else if (photonView.isMine && isAlive) {
             inputListeners();
             updateContainerPos();
-        } else {
+        } else if (photonView.isMine && !isAlive) {
             resetPlayer();
         }
     }
-
+    
     void resetPlayer () {
         spawnTime -= Time.deltaTime;
 
         if (!isAlive && spawnTime < 0) {
             spawnTime = 4f; //Reset spawn time.
-            print(gameObject.tag + " respawned.");
+            print(gameObject.tag + playerId + " respawned.");
             transform.position = startPosition;
             setAlive(true);
         } else {
@@ -112,7 +123,7 @@ public class Player : MonoBehaviour {
             velocity.y = 0;
         }
 
-        if (Input.GetButton("Jump") && controller.collisions.below) {
+        if (Input.GetButtonDown("Jump") && controller.collisions.below) {
             velocity.y = jumpVelocity;
         }
 

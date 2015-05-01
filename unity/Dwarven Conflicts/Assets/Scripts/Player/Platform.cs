@@ -5,6 +5,16 @@ public class Platform : MonoBehaviour {
     private int owner;
     private int life = 1;
 
+    void OnSerializeNetworkView (BitStream stream, NetworkMessageInfo info) {
+        Vector3 syncPosition = Vector3.zero;
+        if (stream.isWriting) {
+            print("writing");
+            stream.Serialize(ref syncPosition);
+        } else {
+            print("else");
+            stream.Serialize(ref syncPosition);
+        }
+    }
 
     public void initPlatform(Vector3 position, int owner) {
 
