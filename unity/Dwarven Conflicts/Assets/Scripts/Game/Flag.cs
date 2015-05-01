@@ -36,7 +36,7 @@ public class Flag : MonoBehaviour {
 
     void followPlayer () {
         gameObject.transform.position = new Vector3(
-            currentPlayer.transform.position.x + 0.55f,
+            currentPlayer.transform.position.x + 0.8f,
             currentPlayer.transform.position.y + 1f,
             currentPlayer.transform.position.z
         );

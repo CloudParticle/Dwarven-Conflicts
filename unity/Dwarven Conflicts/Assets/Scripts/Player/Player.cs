@@ -94,10 +94,10 @@ public class Player : Photon.MonoBehaviour {
             transform.position = Vector3.Lerp(transform.position, this.correctPlayerPos, Time.deltaTime * 5);
             transform.rotation = Quaternion.Lerp(transform.rotation, this.correctPlayerRot, Time.deltaTime * 5);
         }
-        else if (photonView.isMine && isAlive) {
+        else if (isAlive) {
             inputListeners();
             updateContainerPos();
-        } else if (photonView.isMine && !isAlive) {
+        } else if (!isAlive) {
             resetPlayer();
         }
     }

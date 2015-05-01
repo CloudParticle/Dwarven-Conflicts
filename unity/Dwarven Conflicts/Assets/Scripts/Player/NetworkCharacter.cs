@@ -16,8 +16,6 @@ public class NetworkCharacter : Photon.MonoBehaviour {
         if (stream.isWriting) {
             // We own this player: send the others our data
             stream.SendNext(transform.position);
-            stream.SendNext(transform.rotation);
-
         } else {
             // Network player, receive data
             this.correctPlayerPos = (Vector3)stream.ReceiveNext();
