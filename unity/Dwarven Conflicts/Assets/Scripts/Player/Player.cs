@@ -18,12 +18,13 @@ public class Player : Photon.MonoBehaviour {
 	Vector3 velocity;
 	float velocityXSmoothing;
 
-    //Sets on initPlayer
+    //Set on initPlayer
     public int playerId = 0;
     private Vector3 startPosition;
     private bool isAlive = true;
 
     //Dynamite
+    public Transform spawnPoint;
     public GameObject dynamite;
     public float fireRate = 1f;
     private float nextFire = 0f;
@@ -39,10 +40,6 @@ public class Player : Photon.MonoBehaviour {
 
 	private PlayerController controller;
     private ScoreControl score;
-
-    //Photon
-    private Vector3 correctPlayerPos;
-    private Quaternion correctPlayerRot;
 
     void Awake () {
         controller = GetComponent<PlayerController>();
@@ -90,15 +87,13 @@ public class Player : Photon.MonoBehaviour {
     }
 
 	void FixedUpdate() {
-        if (!photonView.isMine) {
-            transform.position = Vector3.Lerp(transform.position, this.correctPlayerPos, Time.deltaTime * 5);
-            transform.rotation = Quaternion.Lerp(transform.rotation, this.correctPlayerRot, Time.deltaTime * 5);
-        }
-        else if (isAlive) {
-            inputListeners();
-            updateContainerPos();
-        } else if (!isAlive) {
-            resetPlayer();
+        if (photonView.isMine) {
+            if (isAlive) {
+                inputListeners();
+                updateContainerPos();
+            } else if (!isAlive) {
+                resetPlayer();
+            }
         }
     }
     
@@ -107,11 +102,10 @@ public class Player : Photon.MonoBehaviour {
 
         if (!isAlive && spawnTime < 0) {
             spawnTime = 4f; //Reset spawn time.
-            print(gameObject.tag + playerId + " respawned.");
+            print(gameObject.tag + " " + playerId + " respawned.");
             transform.position = startPosition;
             setAlive(true);
         } else {
-            //State: spawning
             transform.position = startPosition;
         }
     }
@@ -129,8 +123,7 @@ public class Player : Photon.MonoBehaviour {
 
         if (Input.GetButton("Fire1") && Time.time > nextFire) {
             nextFire = Time.time + fireRate;
-            //Instantiate(dynamite, gameObject.transform.position, gameObject.transform.rotation);
-            PhotonNetwork.Instantiate(dynamite.name, gameObject.transform.position, gameObject.transform.rotation, 0);
+            PhotonNetwork.Instantiate(dynamite.name, spawnPoint.transform.position, gameObject.transform.rotation, 0);
         }
 
         if (Input.GetButton("Fire2") && Time.time > nextFire) {

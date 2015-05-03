@@ -3,7 +3,7 @@ using System.Collections;
 
 [RequireComponent(typeof(Flag))]
 [RequireComponent(typeof(Player))]
-public class DestroyByBoundary : MonoBehaviour {
+public class DestroyByBoundary : Photon.MonoBehaviour {
 
 	// Destroys objects that leaves the surrounding game area.
 	void OnTriggerExit2D (Collider2D other) {
