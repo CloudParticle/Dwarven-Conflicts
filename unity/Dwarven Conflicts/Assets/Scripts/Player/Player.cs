@@ -5,6 +5,7 @@ using System.Collections;
 [RequireComponent(typeof(ScoreControl))]
 public class Player : Photon.MonoBehaviour {
     //Variables
+    private Vector3 correctPlayerPos;
 	private float jumpHeight = 2.6f;
 	private float timeToJumpApex = 0.3f;
 	private float accelerationTimeAirborne = 0.2f;
@@ -55,7 +56,8 @@ public class Player : Photon.MonoBehaviour {
 		gravity = -(2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 
-        platformWrapper = (GameObject)Instantiate(platformContainer, Vector3.zero, transform.rotation);
+        platformWrapper = Instantiate(platformContainer, Vector3.zero, transform.rotation) as GameObject;
+        
         resetPlayer();
         updateContainerPos();
     }
@@ -86,15 +88,25 @@ public class Player : Photon.MonoBehaviour {
         isAlive = status;
     }
 
+    void Update () {
+        if (photonView.isMine && isAlive) {
+            controller.enabled = true;
+            inputListeners();
+            updateContainerPos();
+        }
+
+        if (photonView.isMine && !isAlive) {
+            resetPlayer();
+        }
+    }
+
 	void FixedUpdate() {
         if (photonView.isMine) {
-            if (isAlive) {
-                inputListeners();
-                updateContainerPos();
-            } else if (!isAlive) {
-                resetPlayer();
-            }
-        }
+
+        } else {
+            transform.position = Vector3.Lerp(transform.position, this.correctPlayerPos * 2, Time.deltaTime * 5);
+            //transform.rotation = Quaternion.Lerp(transform.rotation, this.correctPlayerRot, Time.deltaTime * 5);
+        }      
     }
     
     void resetPlayer () {
@@ -148,5 +160,15 @@ public class Player : Photon.MonoBehaviour {
         );
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    void OnPhotonSerializeView (PhotonStream stream, PhotonMessageInfo info) {
+        if (stream.isWriting) {
+            // We own this player: send the others our data
+            stream.SendNext(transform.position);
+        } else {
+            // Network player, receive data
+            correctPlayerPos = (Vector3)stream.ReceiveNext();
+        }
     }
 }

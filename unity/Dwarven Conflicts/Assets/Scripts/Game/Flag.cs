@@ -7,6 +7,14 @@ public class Flag : MonoBehaviour {
     public int owner;
     private Player currentPlayer;
 
+    private BoxCollider2D collider;
+    private Rigidbody2D rb;
+
+    void Awake () {
+        collider = gameObject.GetComponent<BoxCollider2D>();
+        rb = gameObject.GetComponent<Rigidbody2D>();
+    }
+
     public void initFlag (Vector3 startPos, int ownerId) {
         startPosition = startPos;
         owner = ownerId;
@@ -35,11 +43,20 @@ public class Flag : MonoBehaviour {
     }
 
     void followPlayer () {
+        togglePhysics(false);
+
         gameObject.transform.position = new Vector3(
             currentPlayer.transform.position.x + 0.8f,
             currentPlayer.transform.position.y + 1f,
             currentPlayer.transform.position.z
         );
+    }
+
+    void togglePhysics (bool active) {
+        
+
+        collider.enabled = active;
+        rb.isKinematic = !active;
     }
 
     public void resetFlag () {
