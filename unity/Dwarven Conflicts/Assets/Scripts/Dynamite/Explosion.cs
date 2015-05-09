@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Explosion : Photon.MonoBehaviour {
     private bool hitPlayer = false;
+    private bool hasExploded = false;
+
     private float timeLeft = 0.5f;
     private GameObject hitPlayerObj;
 
@@ -29,7 +31,8 @@ public class Explosion : Photon.MonoBehaviour {
     }
 
     void OnTriggerEnter2D (Collider2D other) {
-        if (other.gameObject.tag == "Platform") {
+        if (other.gameObject.tag == "Platform" && !hasExploded) {
+            hasExploded = true;
             Platform platform = other.gameObject.GetComponent<Platform>();
             platform.reduceLife();
             print("Exploded on: " + other.gameObject.name);

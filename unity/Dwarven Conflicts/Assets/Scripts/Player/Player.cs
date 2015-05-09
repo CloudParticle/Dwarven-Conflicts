@@ -2,10 +2,8 @@
 using System.Collections;
 
 [RequireComponent (typeof (PlayerController))]
-[RequireComponent(typeof(ScoreControl))]
 public class Player : Photon.MonoBehaviour {
     //Variables
-    private Vector3 correctPlayerPos;
 	private float jumpHeight = 2.6f;
 	private float timeToJumpApex = 0.3f;
 	private float accelerationTimeAirborne = 0.2f;
@@ -13,10 +11,17 @@ public class Player : Photon.MonoBehaviour {
 	private float moveSpeed = 5f;
     private float spawnTime = 4f;
 
+    //Photon
+    private float lastSynchronizationTime = 0f;
+    private float syncDelay = 0f;
+    private float syncTime = 0f;
+    private Vector3 syncStartPosition = Vector3.zero;
+    private Vector3 syncEndPosition = Vector3.zero;
+
     //Game variables
 	float gravity;
 	float jumpVelocity;
-	Vector3 velocity;
+	public Vector3 velocity;
 	float velocityXSmoothing;
 
     //Set on initPlayer
@@ -47,6 +52,13 @@ public class Player : Photon.MonoBehaviour {
         score = GetComponent<ScoreControl>();
         platform = Resources.Load("Platform") as GameObject;
         platformContainer = Resources.Load("PlatformArea") as GameObject;
+    }
+
+    void Start () {
+        if (photonView.isMine) {
+            controller.enabled = true;
+            gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
+        }
     }
 
     //Use as constructor who recieve playerId.
@@ -90,7 +102,6 @@ public class Player : Photon.MonoBehaviour {
 
     void Update () {
         if (photonView.isMine && isAlive) {
-            controller.enabled = true;
             inputListeners();
             updateContainerPos();
         }
@@ -98,15 +109,6 @@ public class Player : Photon.MonoBehaviour {
         if (photonView.isMine && !isAlive) {
             resetPlayer();
         }
-    }
-
-	void FixedUpdate() {
-        if (photonView.isMine) {
-
-        } else {
-            transform.position = Vector3.Lerp(transform.position, this.correctPlayerPos * 2, Time.deltaTime * 5);
-            //transform.rotation = Quaternion.Lerp(transform.rotation, this.correctPlayerRot, Time.deltaTime * 5);
-        }      
     }
     
     void resetPlayer () {
@@ -160,15 +162,5 @@ public class Player : Photon.MonoBehaviour {
         );
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
-    }
-
-    void OnPhotonSerializeView (PhotonStream stream, PhotonMessageInfo info) {
-        if (stream.isWriting) {
-            // We own this player: send the others our data
-            stream.SendNext(transform.position);
-        } else {
-            // Network player, receive data
-            correctPlayerPos = (Vector3)stream.ReceiveNext();
-        }
     }
 }

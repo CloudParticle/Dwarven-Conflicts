@@ -27,19 +27,12 @@ public class NetworkConnection : Photon.MonoBehaviour {
     void OnJoinedRoom () {
         GameObject play = Resources.Load("Player") as GameObject;
         GameObject dwarf = PhotonNetwork.Instantiate(play.name, new Vector3(-10f, 0f, 0f), Quaternion.identity, 0);
-        
-        PlayerController controller = dwarf.GetComponent<PlayerController>();
-        Rigidbody2D rb = dwarf.GetComponent<Rigidbody2D>();
         Player player = dwarf.GetComponent<Player>();
         if (PhotonNetwork.player.ID == 1) {
             player.initPlayer(new Vector3(-10f, 0f, 0f), PhotonNetwork.player.ID);
         } else {
             player.initPlayer(new Vector3(11f, 0f, 0f), PhotonNetwork.player.ID);
         }
-
-        controller.enabled = true;
-        rb.isKinematic = false;
-        player.enabled = true;
     }
 
     void OnGUI () {
