@@ -58,6 +58,8 @@ public class Player : Photon.MonoBehaviour {
         if (photonView.isMine) {
             controller.enabled = true;
             gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
+            gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
+            jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
         }
     }
 
@@ -65,8 +67,6 @@ public class Player : Photon.MonoBehaviour {
     public void initPlayer(Vector3 startPos, int id) {
         startPosition = startPos;    
         playerId = id;
-		gravity = -(2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);
-		jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 
         platformWrapper = Instantiate(platformContainer, Vector3.zero, transform.rotation) as GameObject;
         
@@ -107,9 +107,9 @@ public class Player : Photon.MonoBehaviour {
             } else {
                 resetPlayer();
             }
-        }
 
-        updateContainerPos();
+            updateContainerPos();            
+        }
     }
     
     void resetPlayer () {

@@ -2,18 +2,15 @@
 using System.Collections;
 
 public class GameController: MonoBehaviour {
-    //public
-    public NetworkConnection network;
-    
     //Script
     private Player player;
     private Flag flag;
     private Castle castle;
 
     //Start positions for objects. Should be more flexible in the future with different maps/players.
-    Vector3[] playerPosition    = { new Vector3(-11f, 0f, 0f), new Vector3(12f, 0f, 0f) };
-    Vector3[] flagPosition      = { new Vector3(-11f, -2f, 0f), new Vector3(13f, -2f, 0f) };
-    Vector3[] castlePosition    = { new Vector3(-13f, 0f, 0f), new Vector3(-13f, 0f, 0f) };
+    Vector3[] playerPosition    = { new Vector3(-10f, 0f, 0f), new Vector3(11f, 0f, 0f) };
+    Vector3[] flagPosition      = { new Vector3(-11.5f, 2f, 0f), new Vector3(12f, 2f, 0f) };
+    Vector3[] castlePosition    = { new Vector3(-13f, 0f, 0f), new Vector3(13f, 0f, 0f) };
 
 
     public void initConnectedPlayer(int playerId) {
