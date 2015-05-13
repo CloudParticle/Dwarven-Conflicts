@@ -2,17 +2,18 @@
 using System.Collections;
 
 public class NetworkConnection : Photon.MonoBehaviour {
-    // Use this for initialization
+    private GameController gameController;
+
+    void Awake () {
+        gameController = gameObject.GetComponent<GameController>();
+    }
     void Start () {
-        PhotonNetwork.ConnectUsingSettings("0.1");
+        PhotonNetwork.ConnectUsingSettings("0.2");
         PhotonNetwork.logLevel = PhotonLogLevel.ErrorsOnly;
     }
 
     void OnPhotonPlayerConnected (PhotonPlayer player) {
         Debug.Log("OnPhotonPlayerConnected: " + player);
-
-        // when new players join, we send "who's it" to let them know
-        // only one player will do this: the "master"
     }
 
     void OnJoinedLobby () {
@@ -25,14 +26,7 @@ public class NetworkConnection : Photon.MonoBehaviour {
     }
 
     void OnJoinedRoom () {
-        GameObject play = Resources.Load("Player") as GameObject;
-        GameObject dwarf = PhotonNetwork.Instantiate(play.name, new Vector3(-10f, 0f, 0f), Quaternion.identity, 0);
-        Player player = dwarf.GetComponent<Player>();
-        if (PhotonNetwork.player.ID == 1) {
-            player.initPlayer(new Vector3(-10f, 0f, 0f), PhotonNetwork.player.ID);
-        } else {
-            player.initPlayer(new Vector3(11f, 0f, 0f), PhotonNetwork.player.ID);
-        }
+        gameController.initConnectedPlayer(PhotonNetwork.player.ID-1);
     }
 
     void OnGUI () {

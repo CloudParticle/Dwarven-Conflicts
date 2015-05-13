@@ -9,6 +9,10 @@ public class UIHandler : MonoBehaviour {
 	void Start () {
 	    
 	}
+
+    public void setWinningPlayer (int playerId) {
+        print("Player " + playerId + "won!");
+    }
 	
 	// Update is called once per frame
 	void Update () {

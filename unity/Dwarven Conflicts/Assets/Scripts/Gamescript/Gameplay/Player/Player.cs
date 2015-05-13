@@ -101,14 +101,15 @@ public class Player : Photon.MonoBehaviour {
     }
 
     void Update () {
-        if (photonView.isMine && isAlive) {
-            inputListeners();
-            updateContainerPos();
+        if (photonView.isMine) {
+            if (isAlive) {
+                inputListeners();
+            } else {
+                resetPlayer();
+            }
         }
 
-        if (photonView.isMine && !isAlive) {
-            resetPlayer();
-        }
+        updateContainerPos();
     }
     
     void resetPlayer () {

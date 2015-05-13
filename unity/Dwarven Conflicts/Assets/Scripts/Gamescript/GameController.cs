@@ -2,52 +2,41 @@
 using System.Collections;
 
 public class GameController: MonoBehaviour {
+    //public
+    public NetworkConnection network;
+    
     //Script
     private Player player;
     private Flag flag;
     private Castle castle;
 
-
-    //GameObject
-    private GameObject playerObj;
-    private GameObject flagObj;
-    private GameObject castleObj;
-
-    //UI
-    public UIHandler ui;
+    //Start positions for objects. Should be more flexible in the future with different maps/players.
+    Vector3[] playerPosition    = { new Vector3(-11f, 0f, 0f), new Vector3(12f, 0f, 0f) };
+    Vector3[] flagPosition      = { new Vector3(-11f, -2f, 0f), new Vector3(13f, -2f, 0f) };
+    Vector3[] castlePosition    = { new Vector3(-13f, 0f, 0f), new Vector3(-13f, 0f, 0f) };
 
 
-	void Start () {
-        //Player
-        //addPlayer(new Vector3(-10f, 0f, 0f), 0);
-        //addPlayer(new Vector3(12f, 0f, 0f), 1);
-
-        //Flag
-        addFlag(new Vector3(-11f, -2f, 0f), 0);
-        addFlag(new Vector3(13f, -2f, 0f), 1);
-
-        //Castle
-        addCastle(new Vector3(-13f, 0f, 0f), 0);
+    public void initConnectedPlayer(int playerId) {
+        addPlayer(playerId);
+        addFlag(playerId);
+        addCastle(playerId);
     }
 
-    void addPlayer (Vector3 startPosition, int playerId) {
-        GameObject obj = Resources.Load("Player", typeof(GameObject)) as GameObject;
-        playerObj = Instantiate(obj, startPosition, Quaternion.identity) as GameObject;
-        player = playerObj.GetComponent<Player>();
-        player.initPlayer(startPosition, playerId);
+    void addPlayer (int playerId) {
+        GameObject gameObj = PhotonNetwork.Instantiate(Resources.Load("Player").name, playerPosition[playerId], Quaternion.identity, 0);
+        Player player = gameObj.GetComponent<Player>();
+        player.initPlayer(playerPosition[playerId], playerId);
     }
 
-    void addFlag(Vector3 startPosition, int ownerId) {
-        GameObject obj = Resources.Load("Flag", typeof(GameObject)) as GameObject;
-        flagObj = Instantiate(obj, startPosition, Quaternion.identity) as GameObject;
-        flag = flagObj.GetComponent<Flag>();
-        flag.initFlag(startPosition, ownerId);
+    void addFlag(int ownerId) {
+        GameObject gameObj = PhotonNetwork.Instantiate(Resources.Load("Flag").name, flagPosition[ownerId], Quaternion.identity, 0);
+        Flag flag = gameObj.GetComponent<Flag>();
+        flag.initFlag(flagPosition[ownerId], ownerId);
     }
 
-    void addCastle(Vector3 startPosition, int ownerId) {
-        GameObject obj = Resources.Load("Castle", typeof(GameObject)) as GameObject;
-        castleObj = Instantiate(obj, startPosition, Quaternion.identity) as GameObject;
-        castle = castleObj.GetComponent<Castle>();
-        castle.initCastle(startPosition, 1);
+    void addCastle(int ownerId) {
+        GameObject gameObj = PhotonNetwork.Instantiate(Resources.Load("Castle").name, castlePosition[ownerId], Quaternion.identity, 0);
+        Castle castle = gameObj.GetComponent<Castle>();
+        castle.initCastle(castlePosition[ownerId], ownerId);
     }
 }

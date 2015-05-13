@@ -52,9 +52,9 @@ public class Flag : MonoBehaviour {
         );
     }
 
-    void togglePhysics (bool active) {
-        collider.enabled = active;
-        rb.isKinematic = !active;
+    void togglePhysics (bool enable) {
+        collider.enabled = enable;
+        rb.isKinematic = !enable;
     }
 
     public void resetFlag () {
