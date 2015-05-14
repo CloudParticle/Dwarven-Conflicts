@@ -10,6 +10,9 @@ public class Flag : MonoBehaviour {
     private BoxCollider2D collider;
     private Rigidbody2D rb;
 
+    public AudioClip flagCapture;
+    public AudioClip flagReset;
+
     void Awake () {
         collider = gameObject.GetComponent<BoxCollider2D>();
         rb = gameObject.GetComponent<Rigidbody2D>();
@@ -36,8 +39,8 @@ public class Flag : MonoBehaviour {
                 captured = false;                
                 resetFlag();
             } else {
-                print(other.gameObject.tag + " captured the flag!");         
                 captured = true;
+                capturedFlag(other);
             }
         }
     }
@@ -57,9 +60,14 @@ public class Flag : MonoBehaviour {
         rb.isKinematic = !enable;
     }
 
+    void capturedFlag (Collision2D other) {
+        AudioSource.PlayClipAtPoint(flagCapture, transform.position);
+        print(other.gameObject.tag + " captured the flag!");
+    }
+
     public void resetFlag () {
-        print("Player took back the flag!");
-        captured = false;
+        AudioSource.PlayClipAtPoint(flagReset, transform.position);
         gameObject.transform.position = startPosition;
+        print("Player took back the flag!");
     }
 }

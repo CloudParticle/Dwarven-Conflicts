@@ -10,6 +10,9 @@ public class NetworkConnection : Photon.MonoBehaviour {
     void Start () {
         PhotonNetwork.ConnectUsingSettings("0.2");
         PhotonNetwork.logLevel = PhotonLogLevel.ErrorsOnly;
+        if (PhotonNetwork.countOfPlayers > 2) {
+            print("Over two players active: " + PhotonNetwork.countOfPlayers);
+        }
     }
 
     void OnPhotonPlayerConnected (PhotonPlayer player) {

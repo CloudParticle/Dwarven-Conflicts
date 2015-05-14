@@ -20,6 +20,7 @@ public class Castle : MonoBehaviour {
         if (other.gameObject.tag == "Flag") {
             if (other.gameObject.GetComponent<Flag>().owner != ownerId) {
                 print("Player " + ownerId + " won!");
+                Instantiate(Resources.Load("Castle"), Vector3.zero, transform.rotation);
             }
         }
     }

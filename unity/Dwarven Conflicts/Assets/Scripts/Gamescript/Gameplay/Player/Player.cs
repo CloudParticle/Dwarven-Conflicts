@@ -63,7 +63,6 @@ public class Player : Photon.MonoBehaviour {
         }
     }
 
-    //Use as constructor who recieve playerId.
     public void initPlayer(Vector3 startPos, int id) {
         startPosition = startPos;    
         playerId = id;
