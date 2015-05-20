@@ -9,7 +9,6 @@ public class Player : Photon.MonoBehaviour {
 	private float accelerationTimeAirborne = 0.2f;
 	private float accelerationTimeGrounded = 0.1f;
 	private float moveSpeed = 5f;
-    private float spawnTime = 4f;
 
     //Photon
     private float lastSynchronizationTime = 0f;
@@ -43,7 +42,6 @@ public class Player : Photon.MonoBehaviour {
     private GameObject platformContainer;
     private GameObject platformWrapper;
 
-
 	private PlayerController controller;
     private ScoreControl score;
 
@@ -69,7 +67,7 @@ public class Player : Photon.MonoBehaviour {
 
         platformWrapper = Instantiate(platformContainer, Vector3.zero, transform.rotation) as GameObject;
         
-        resetPlayer();
+        StartCoroutine(resetPlayer());
         updateContainerPos();
     }
 
@@ -104,18 +102,17 @@ public class Player : Photon.MonoBehaviour {
             if (isAlive) {
                 inputListeners();
             } else {
-                resetPlayer();
+                StartCoroutine(resetPlayer());
             }
 
             updateContainerPos();            
         }
     }
     
-    void resetPlayer () {
-        spawnTime -= Time.deltaTime;
+    IEnumerator resetPlayer () {
+        yield return new WaitForSeconds(3);
 
-        if (!isAlive && spawnTime < 0) {
-            spawnTime = 4f; //Reset spawn time.
+        if (!isAlive) {
             print(gameObject.tag + " " + playerId + " respawned.");
             transform.position = startPosition;
             setAlive(true);
@@ -162,7 +159,5 @@ public class Player : Photon.MonoBehaviour {
         );
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
-
-        gameObject.GetComponent<PhotonTransformView>().SetSynchronizedValues(velocity, 0f);
     }
 }

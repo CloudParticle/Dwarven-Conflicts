@@ -10,9 +10,6 @@ public class NetworkConnection : Photon.MonoBehaviour {
     void Start () {
         PhotonNetwork.ConnectUsingSettings("0.2");
         PhotonNetwork.logLevel = PhotonLogLevel.ErrorsOnly;
-        if (PhotonNetwork.countOfPlayers > 2) {
-            print("Over two players active: " + PhotonNetwork.countOfPlayers);
-        }
     }
 
     void OnPhotonPlayerConnected (PhotonPlayer player) {
@@ -29,7 +26,12 @@ public class NetworkConnection : Photon.MonoBehaviour {
     }
 
     void OnJoinedRoom () {
-        gameController.initConnectedPlayer(PhotonNetwork.player.ID-1);
+        if (PhotonNetwork.playerList.Length > 2) {
+            print("Over two players active: " + PhotonNetwork.countOfPlayers);
+        } else {
+            print("PLAYER: " + (PhotonNetwork.player.ID - 1));
+            gameController.initConnectedPlayer((PhotonNetwork.player.ID - 1));
+        }
     }
 
     void OnGUI () {

@@ -11,8 +11,9 @@ public class Explosion : Photon.MonoBehaviour {
 	void FixedUpdate () {
         timeLeft -= Time.deltaTime;
         if (timeLeft < 0) {
-            hasExploded = true;
-            PhotonNetwork.Destroy(gameObject);
+            if (PhotonNetwork.isMasterClient) {
+                PhotonNetwork.Destroy(gameObject);
+            }
         }
 
         if (hitPlayer) {
@@ -22,7 +23,7 @@ public class Explosion : Photon.MonoBehaviour {
 	}
 
     void moveHitPlayer () {
-        float velocityX = Random.Range(-3f, 3f),
+        float velocityX = Random.Range(-4f, 3f),
               velocityY = Random.Range(3f, 6f);
 
         hitPlayerObj.GetComponent<Rigidbody2D>().AddForce(
@@ -33,8 +34,9 @@ public class Explosion : Photon.MonoBehaviour {
 
     void OnTriggerEnter2D (Collider2D other) {
         if (other.gameObject.tag == "Platform" && !hasExploded) {
+            hasExploded = true;
             Platform platform = other.gameObject.GetComponent<Platform>();
-            platform.reduceLife();
+            other.gameObject.GetComponent<PhotonView>().RPC("reduceLife", PhotonTargets.AllBuffered);
             print("Exploded on: " + other.gameObject.name);
         } if (other.gameObject.tag == "Player" || other.gameObject.tag == "Dynamite") {
             hitPlayerObj = other.gameObject;

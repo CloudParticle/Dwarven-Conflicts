@@ -1,33 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Platform : Photon.MonoBehaviour {
-    private int owner;
+public class Platform : MonoBehaviour {
+    public int ownerId;
     private int life = 1;
 
-    void OnSerializeNetworkView (BitStream stream, NetworkMessageInfo info) {
-        Vector3 syncPosition = Vector3.zero;
-        if (stream.isWriting) {
-            print("writing");
-            stream.Serialize(ref syncPosition);
+    private int syncLife;
+
+    public void initPlatform (Vector3 position, int owner) {
+        ownerId = owner;
+    }
+
+    [RPC]
+    public void reduceLife () {
+        Debug.Log("Reduce life from " + life + " to " + (life - 1));
+        if (life > 0) {
+            life -= 1;
+            gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
         } else {
-            print("else");
-            stream.Serialize(ref syncPosition);
+            Die();
         }
     }
 
-    public void initPlatform(Vector3 position, int owner) {
-
-    }
-
-    public int reduceLife () {
-        if (life > 0) {
-            gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.magenta);
-            life--;
-        } else {
+    void Die () {
+        if (PhotonNetwork.isMasterClient) {
             PhotonNetwork.Destroy(gameObject);
         }
-        print(gameObject.name + " has " + (life + 1) + " hits left.");
-        return life;
     }
 }
