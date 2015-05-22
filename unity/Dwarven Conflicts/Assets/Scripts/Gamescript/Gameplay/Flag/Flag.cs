@@ -35,7 +35,7 @@ public class Flag : MonoBehaviour {
         if (other.gameObject.tag == "Player") {
             currentPlayer = other.gameObject.GetComponent<Player>();
 
-            if (currentPlayer.getPlayerId() == owner) {
+            if (currentPlayer.playerId == owner) {
                 captured = false;                
                 resetFlag();
             } else {

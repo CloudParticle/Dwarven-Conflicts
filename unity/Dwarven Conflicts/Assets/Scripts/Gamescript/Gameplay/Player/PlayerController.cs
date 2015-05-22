@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour {
 	void Start() {
 		collider = GetComponent<BoxCollider2D>();
 		CalculateRaySpacing ();
+        Physics2D.IgnoreLayerCollision(12, 20);
 	}
 
 	public void Move(Vector3 velocity) {

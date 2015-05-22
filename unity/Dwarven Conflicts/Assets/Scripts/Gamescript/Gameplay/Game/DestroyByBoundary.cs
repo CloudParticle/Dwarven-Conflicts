@@ -29,7 +29,7 @@ public class DestroyByBoundary : Photon.MonoBehaviour {
 
         foreach (GameObject flag in flags) {
             Flag playerFlag = flag.GetComponent<Flag>();
-            if (playerFlag.captured && playerFlag.owner != player.getPlayerId()) {
+            if (playerFlag.captured && playerFlag.owner != player.playerId) {
                 playerFlag.resetFlag();
             }
         }

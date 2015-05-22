@@ -9,6 +9,7 @@ public class Player : Photon.MonoBehaviour {
 	private float accelerationTimeAirborne = 0.2f;
 	private float accelerationTimeGrounded = 0.1f;
 	private float moveSpeed = 5f;
+    private float spawnTime = 4f;
 
     //Photon
     private float lastSynchronizationTime = 0f;
@@ -42,6 +43,7 @@ public class Player : Photon.MonoBehaviour {
     private GameObject platformContainer;
     private GameObject platformWrapper;
 
+
 	private PlayerController controller;
     private ScoreControl score;
 
@@ -66,9 +68,15 @@ public class Player : Photon.MonoBehaviour {
         playerId = id;
 
         platformWrapper = Instantiate(platformContainer, Vector3.zero, transform.rotation) as GameObject;
-        
-        StartCoroutine(resetPlayer());
+        gameObject.layer = 20 + playerId;   //Player layer. Platforms spawn on this layer.
+        resetPlayer();
         updateContainerPos();
+    }
+
+    int getOtherPlayerLayer () {
+        int ignoreLayer = 21;
+        if (playerId == 1) ignoreLayer = 20;
+        return ignoreLayer;
     }
 
     void updateContainerPos() {
@@ -89,10 +97,6 @@ public class Player : Photon.MonoBehaviour {
         return ray.GetPoint(distance);
     }
 
-    public int getPlayerId () {
-        return playerId;
-    }
-
     public void setAlive (bool status) {
         isAlive = status;
     }
@@ -102,17 +106,18 @@ public class Player : Photon.MonoBehaviour {
             if (isAlive) {
                 inputListeners();
             } else {
-                StartCoroutine(resetPlayer());
+                resetPlayer();
             }
 
             updateContainerPos();            
         }
     }
     
-    IEnumerator resetPlayer () {
-        yield return new WaitForSeconds(3);
+    void resetPlayer () {
+        spawnTime -= Time.deltaTime;
 
-        if (!isAlive) {
+        if (!isAlive && spawnTime < 0) {
+            spawnTime = 4f; //Reset spawn time.
             print(gameObject.tag + " " + playerId + " respawned.");
             transform.position = startPosition;
             setAlive(true);
@@ -138,16 +143,8 @@ public class Player : Photon.MonoBehaviour {
         }
 
         if (Input.GetButton("Fire2") && Time.time > nextFire) {
-            //TODO Instantiate new platform that can only make platform inside its own container.
             nextFire = Time.time + fireRate;
-
-            //if (score.subtractScore(playerId) > 0) {
-                PhotonNetwork.Instantiate(platform.name, new Vector3(
-                    platformWrapper.transform.position.x,
-                    platformWrapper.transform.position.y - (1 + platformHeight),
-                    platformWrapper.transform.position.z
-                ), transform.rotation, 0);
-            //}
+            instantiatePlatform();
         }
 
         float targetVelocityX = input.x * moveSpeed;
@@ -159,5 +156,16 @@ public class Player : Photon.MonoBehaviour {
         );
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    void instantiatePlatform () {
+        GameObject tempPlatform = PhotonNetwork.Instantiate(platform.name, new Vector3(
+            platformWrapper.transform.position.x,
+            platformWrapper.transform.position.y - (1 + platformHeight),
+            platformWrapper.transform.position.z
+        ), transform.rotation, 0);
+
+        tempPlatform.layer = 13;
+        tempPlatform.GetComponent<Platform>().initPlatform(playerId);
     }
 }
