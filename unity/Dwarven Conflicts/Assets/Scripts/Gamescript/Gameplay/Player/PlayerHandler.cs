@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerHandler : Photon.MonoBehaviour {
+public class PlayerHandler : MonoBehaviour {
     public Player player;
     public PlayerController controller;
 
@@ -11,9 +11,7 @@ public class PlayerHandler : Photon.MonoBehaviour {
 	}
 
     void Start () {
-        if (photonView.isMine) {
-            player.enabled = true;
-            controller.enabled = true;
-        }
+        player.enabled = true;
+        controller.enabled = true;
     }
 }

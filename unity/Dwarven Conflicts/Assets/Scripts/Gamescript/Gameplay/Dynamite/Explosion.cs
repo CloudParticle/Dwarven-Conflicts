@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Explosion : Photon.MonoBehaviour {
+public class Explosion : MonoBehaviour {
     private bool hitPlayer = false;
     private bool hasExploded = false;
 
@@ -11,9 +11,7 @@ public class Explosion : Photon.MonoBehaviour {
 	void FixedUpdate () {
         timeLeft -= Time.deltaTime;
         if (timeLeft < 0) {
-            if (PhotonNetwork.isMasterClient) {
-                PhotonNetwork.Destroy(gameObject);
-            }
+            Destroy(gameObject);
         }
 
         if (hitPlayer) {
@@ -36,7 +34,7 @@ public class Explosion : Photon.MonoBehaviour {
         if (other.gameObject.tag == "Platform" && !hasExploded) {
             hasExploded = true;
             Platform platform = other.gameObject.GetComponent<Platform>();
-            other.gameObject.GetComponent<PhotonView>().RPC("reduceLife", PhotonTargets.AllBuffered);
+            platform.reduceLife();
             print("Exploded on: " + other.gameObject.name);
         } if (other.gameObject.tag == "Player" || other.gameObject.tag == "Dynamite") {
             hitPlayerObj = other.gameObject;

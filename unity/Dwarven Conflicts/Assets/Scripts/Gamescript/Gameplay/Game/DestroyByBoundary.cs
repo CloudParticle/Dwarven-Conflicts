@@ -3,7 +3,7 @@ using System.Collections;
 
 [RequireComponent(typeof(Flag))]
 [RequireComponent(typeof(Player))]
-public class DestroyByBoundary : Photon.MonoBehaviour {
+public class DestroyByBoundary : MonoBehaviour {
 
 	// Destroys objects that leaves the surrounding game area.
 	void OnTriggerExit2D (Collider2D other) {
@@ -15,9 +15,7 @@ public class DestroyByBoundary : Photon.MonoBehaviour {
                 other.gameObject.GetComponent<Flag>().resetFlag();
                 break;
             default:
-                if (PhotonNetwork.isMasterClient) {
-                    PhotonNetwork.Destroy(other.gameObject);
-                }
+                Destroy(other.gameObject);
                 break;
         }
 		Debug.Log("Out of bounds: "+ other.tag);

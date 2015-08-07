@@ -31,6 +31,6 @@ public class ScoreControl : MonoBehaviour {
 
     private void renderScore () {
         print("score: " + score);
-        log.text = score.ToString();
+        //log.text = score.ToString();
     }
 }

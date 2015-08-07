@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Platform : Photon.MonoBehaviour {
+public class Platform : MonoBehaviour {
     public int ownerId = 0;
     private int life = 1;
 
@@ -25,7 +25,6 @@ public class Platform : Photon.MonoBehaviour {
         }
     }
 
-    [RPC]
     public void reduceLife () {
         Debug.Log("Reduce life from " + life + " to " + (life - 1));
         if (life > 0) {
@@ -37,8 +36,6 @@ public class Platform : Photon.MonoBehaviour {
     }
 
     void Die () {
-        if (PhotonNetwork.isMasterClient) {
-            PhotonNetwork.Destroy(gameObject);
-        }
+        Destroy(gameObject);
     }
 }

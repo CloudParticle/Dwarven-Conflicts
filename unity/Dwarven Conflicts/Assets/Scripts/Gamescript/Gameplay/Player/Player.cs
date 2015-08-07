@@ -2,9 +2,9 @@
 using System.Collections;
 
 [RequireComponent (typeof (PlayerController))]
-public class Player : Photon.MonoBehaviour {
+public class Player : MonoBehaviour {
     //Variables
-	private float jumpHeight = 2.6f;
+	private float jumpHeight = 2.8f;
 	private float timeToJumpApex = 0.3f;
 	private float accelerationTimeAirborne = 0.2f;
 	private float accelerationTimeGrounded = 0.1f;
@@ -24,10 +24,13 @@ public class Player : Photon.MonoBehaviour {
 	public Vector3 velocity;
 	float velocityXSmoothing;
 
+    GameObject gameController;
+
     //Set on initPlayer
     public int playerId = 0;
     private Vector3 startPosition;
     private bool isAlive = true;
+    private int logCount = 15;
 
     //Dynamite
     public Transform spawnPoint;
@@ -52,15 +55,14 @@ public class Player : Photon.MonoBehaviour {
         score = GetComponent<ScoreControl>();
         platform = Resources.Load("Platform") as GameObject;
         platformContainer = Resources.Load("PlatformArea") as GameObject;
+        gameController = GameObject.FindGameObjectWithTag("Game");
     }
 
     void Start () {
-        if (photonView.isMine) {
-            controller.enabled = true;
-            gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
-            gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
-            jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
-        }
+        controller.enabled = true;
+        gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
+        gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
+        jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
     }
 
     public void initPlayer(Vector3 startPos, int id) {
@@ -102,15 +104,13 @@ public class Player : Photon.MonoBehaviour {
     }
 
     void Update () {
-        if (photonView.isMine) {
-            if (isAlive) {
-                inputListeners();
-            } else {
-                resetPlayer();
-            }
-
-            updateContainerPos();            
+        if (isAlive) {
+            inputListeners();
+        } else {
+            resetPlayer();
         }
+
+        updateContainerPos();
     }
     
     void resetPlayer () {
@@ -139,7 +139,7 @@ public class Player : Photon.MonoBehaviour {
 
         if (Input.GetButton("Fire1") && Time.time > nextFire) {
             nextFire = Time.time + fireRate;
-            PhotonNetwork.Instantiate(dynamite.name, spawnPoint.transform.position, gameObject.transform.rotation, 0);
+            Instantiate(dynamite, spawnPoint.transform.position, gameObject.transform.rotation);
         }
 
         if (Input.GetButton("Fire2") && Time.time > nextFire) {
@@ -159,13 +159,26 @@ public class Player : Photon.MonoBehaviour {
     }
 
     void instantiatePlatform () {
-        GameObject tempPlatform = PhotonNetwork.Instantiate(platform.name, new Vector3(
-            platformWrapper.transform.position.x,
-            platformWrapper.transform.position.y - (1 + platformHeight),
-            platformWrapper.transform.position.z
-        ), transform.rotation, 0);
+        if (reduceLogCount()) {
+            GameObject tempPlatform = Instantiate(platform, new Vector3(
+                platformWrapper.transform.position.x,
+                platformWrapper.transform.position.y - (1 + platformHeight),
+                platformWrapper.transform.position.z
+            ), transform.rotation) as GameObject;
 
-        tempPlatform.layer = 13;
-        tempPlatform.GetComponent<Platform>().initPlatform(playerId);
+            tempPlatform.layer = 13;
+            tempPlatform.GetComponent<Platform>().initPlatform(playerId);
+        } else {
+            print("Out of logs.");
+        }
+    }
+
+    bool reduceLogCount () {
+        if (logCount > 0) {
+            logCount--;
+        }
+
+        gameObject.GetComponent<ScoreControl>().setScore(logCount, playerId);
+        return logCount > 0 ? true : false;
     }
 }

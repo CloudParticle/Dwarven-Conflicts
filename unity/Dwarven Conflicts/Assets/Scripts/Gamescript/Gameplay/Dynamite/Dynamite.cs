@@ -2,7 +2,7 @@
 using System.Collections;
 
 [RequireComponent(typeof(SphereCollider))]
-public class Dynamite : Photon.MonoBehaviour {
+public class Dynamite : MonoBehaviour {
     private Rigidbody2D rb;
     public GameObject explosion;
 
@@ -26,10 +26,10 @@ public class Dynamite : Photon.MonoBehaviour {
     }
 
     void explode () {
-        isExploding = true;
-        if (PhotonNetwork.isMasterClient) {
-            PhotonNetwork.Instantiate(explosion.name, gameObject.transform.position, gameObject.transform.rotation, 0);
-            PhotonNetwork.Destroy(gameObject);
+        if (!isExploding) {
+            Instantiate(explosion, gameObject.transform.position, gameObject.transform.rotation);
+            Destroy(gameObject);
+            isExploding = true;
         }
     }
 }
