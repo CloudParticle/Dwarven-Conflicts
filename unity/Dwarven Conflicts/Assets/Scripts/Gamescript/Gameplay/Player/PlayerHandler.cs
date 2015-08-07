@@ -11,7 +11,9 @@ public class PlayerHandler : MonoBehaviour {
 	}
 
     void Start () {
-        player.enabled = true;
-        controller.enabled = true;
+        if (player.playerId == 0) {
+            player.enabled = true;
+            controller.enabled = true;
+        }       
     }
 }
