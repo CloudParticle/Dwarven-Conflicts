@@ -8,29 +8,30 @@ public class ScoreControl : MonoBehaviour {
     private int score = 15;
 
     void Start () {
-        initScore();
+        initScore(0);
         //renderScore();
     }
 
-    void initScore () {
+    void initScore (int player) {
         print("Start count: " + score);
+        log = GameObject.Find("Log" + player).GetComponent<Text>();
     }
 
     public void setScore (int scoreValue, int player) {
         score = scoreValue;
-        renderScore();
+        renderScore(player);
     }
 
     public int subtractScore (int player) {
         if (score >  0) {
             score--;
         }
-        renderScore();
+        renderScore(player);
         return score;
     }
 
-    private void renderScore () {
-        print("score: " + score);
-        //log.text = score.ToString();
+    private void renderScore (int player) {
+        print("P" + player + " score = " + score);
+        log.text = score.ToString();
     }
 }

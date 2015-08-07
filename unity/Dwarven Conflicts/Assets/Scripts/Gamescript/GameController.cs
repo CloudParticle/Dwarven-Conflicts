@@ -3,6 +3,7 @@ using System.Collections;
 
 public class GameController: MonoBehaviour {
     //Script
+    private GameObject gui;
     private Player player;
     private Flag flag;
     private Castle castle;
@@ -14,7 +15,7 @@ public class GameController: MonoBehaviour {
     Vector3[] basePosition      = { new Vector3(-10.5f, -4f, 0f), new Vector3(10.5f, -4f, 0f) };
 
     void Start () {
-        Instantiate(Resources.Load("GUI"));
+        gui = Instantiate(Resources.Load("GUI")) as GameObject;
         initConnectedPlayer(0);
         initConnectedPlayer(1);
     }
