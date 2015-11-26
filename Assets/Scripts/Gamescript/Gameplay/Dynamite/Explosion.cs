@@ -11,7 +11,6 @@ public class Explosion : MonoBehaviour {
         timeLeft -= Time.deltaTime;
         if (timeLeft < 0) {
             //Destory explosion (self) after set time.
-            Destroy(gameObject);
         }
 
         if (hitPlayer) {
@@ -34,12 +33,18 @@ public class Explosion : MonoBehaviour {
         print("Player been hit by an explosion!");
     }
 
+    void removeSelf () {
+        Destroy(gameObject);
+    }
+
     void OnTriggerEnter2D (Collider2D other) {
         if (other.gameObject.tag == "Platform") {
             Platform platform = other.gameObject.GetComponent<Platform>();
             platform.reduceLife();
             print("Exploded on: " + other.gameObject.name);
-        } if (other.gameObject.tag == "Player" || other.gameObject.tag == "Dynamite") {
+            removeSelf();
+        }
+        if (other.gameObject.tag == "Player" || other.gameObject.tag == "Dynamite") {
             hitPlayerObj = other.gameObject;
             hitPlayer = true;
         }

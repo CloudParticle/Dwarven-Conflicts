@@ -14,8 +14,8 @@ public class Flag : MonoBehaviour {
     public AudioClip flagReset;
 
     void Awake () {
-        collider = gameObject.GetComponent<BoxCollider2D>();
-        rb = gameObject.GetComponent<Rigidbody2D>();
+        collider = GetComponent<BoxCollider2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     public void initFlag (Vector3 startPos, int ownerId) {

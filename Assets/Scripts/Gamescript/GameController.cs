@@ -29,19 +29,19 @@ public class GameController: MonoBehaviour {
 
     void addPlayer (int playerId) {
         GameObject gameObj = Instantiate(Resources.Load("Player"), playerPosition[playerId], Quaternion.identity) as GameObject;
-        Player player = gameObj.GetComponent<Player>();
+        player = gameObj.GetComponent<Player>();
         player.initPlayer(playerPosition[playerId], playerId);
     }
 
     void addFlag(int ownerId) {
         GameObject gameObj = Instantiate(Resources.Load("Flag"), flagPosition[ownerId], Quaternion.identity) as GameObject;
-        Flag flag = gameObj.GetComponent<Flag>();
+        flag = gameObj.GetComponent<Flag>();
         flag.initFlag(flagPosition[ownerId], ownerId);
     }
 
     void addCastle(int ownerId) {
         GameObject gameObj = Instantiate(Resources.Load("Castle"), castlePosition[ownerId], Quaternion.identity) as GameObject;
-        Castle castle = gameObj.GetComponent<Castle>();
+        castle = gameObj.GetComponent<Castle>();
         castle.initCastle(castlePosition[ownerId], ownerId);
     }
 

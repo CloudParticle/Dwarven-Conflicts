@@ -1,11 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Platform : MonoBehaviour {
     public int ownerId = 0;
     private int life = 1;
-
-    private int syncLife;
 
     public void initPlatform (int owner) {
         ownerId = owner;
