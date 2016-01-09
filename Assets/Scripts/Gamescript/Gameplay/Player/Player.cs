@@ -11,13 +11,6 @@ public class Player : MonoBehaviour {
 	private float moveSpeed = 5f;
     private float spawnTime = 4f;
 
-    //Photon
-    private float lastSynchronizationTime = 0f;
-    private float syncDelay = 0f;
-    private float syncTime = 0f;
-    private Vector3 syncStartPosition = Vector3.zero;
-    private Vector3 syncEndPosition = Vector3.zero;
-
     //Game variables
 	float gravity;
 	float jumpVelocity;
