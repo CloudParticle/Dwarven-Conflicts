@@ -46,6 +46,6 @@ public class GameController: MonoBehaviour {
     }
 
     void addBase(int ownerId) {
-        GameObject gameObj = Instantiate(Resources.Load("StartBase"), basePosition[ownerId], Quaternion.identity) as GameObject;
+        Instantiate(Resources.Load("StartBase"), basePosition[ownerId], Quaternion.identity);
     }
 }

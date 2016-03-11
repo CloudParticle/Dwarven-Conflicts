@@ -16,12 +16,12 @@ public class PlayerController : MonoBehaviour {
 	float horizontalRaySpacing;
 	float verticalRaySpacing;
 
-	BoxCollider2D collider;
+	BoxCollider2D playerCollider;
 	RaycastOrigins raycastOrigins;
 	public CollisionInfo collisions;
 
 	void Start() {
-		collider = GetComponent<BoxCollider2D>();
+		playerCollider = GetComponent<BoxCollider2D>();
 		CalculateRaySpacing ();
         Physics2D.IgnoreLayerCollision(12, 20);
 	}
@@ -166,7 +166,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void UpdateRaycastOrigins() {
-		Bounds bounds = collider.bounds;
+		Bounds bounds = playerCollider.bounds;
 		bounds.Expand (skinWidth * -2);
 
 		raycastOrigins.bottomLeft = new Vector2 (bounds.min.x, bounds.min.y);
@@ -176,7 +176,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void CalculateRaySpacing() {
-		Bounds bounds = collider.bounds;
+		Bounds bounds = playerCollider.bounds;
 		bounds.Expand (skinWidth * -2);
 
 		horizontalRayCount = Mathf.Clamp (horizontalRayCount, 2, int.MaxValue);

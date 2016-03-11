@@ -7,14 +7,14 @@ public class Flag : MonoBehaviour {
     public int owner;
     private Player currentPlayer;
 
-    private BoxCollider2D collider;
+    private BoxCollider2D flagCollider;
     private Rigidbody2D rb;
 
     public AudioClip flagCapture;
     public AudioClip flagReset;
 
     void Awake () {
-        collider = GetComponent<BoxCollider2D>();
+        flagCollider = GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -56,7 +56,7 @@ public class Flag : MonoBehaviour {
     }
 
     void togglePhysics (bool enable) {
-        collider.enabled = enable;
+        flagCollider.enabled = enable;
         rb.isKinematic = !enable;
     }
 
