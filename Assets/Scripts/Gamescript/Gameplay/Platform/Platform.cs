@@ -12,6 +12,14 @@ public class Platform : MonoBehaviour {
         //
     }
 
+    void togglePhysics(bool enable) {
+        gameObject.GetComponent<BoxCollider2D>().enabled = enable;
+
+        Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+        rb.isKinematic = !enable;
+        rb.freezeRotation = !enable;
+    }
+
     void OnCollisionEnter2D (Collision2D other) {
         if (other.gameObject.tag == "Player") {
             Player player = other.gameObject.GetComponent<Player>();
@@ -28,7 +36,8 @@ public class Platform : MonoBehaviour {
             life -= 1;
             gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
         } else {
-            Die();
+            togglePhysics(true);
+            //Die();
         }
     }
 
