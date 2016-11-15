@@ -8,26 +8,12 @@ public class Platform : MonoBehaviour {
         ownerId = owner;
     }
 
-    void OnTriggerEnter2D (Collider2D other) {
-        //
-    }
-
     void togglePhysics(bool enable) {
         gameObject.GetComponent<BoxCollider2D>().enabled = enable;
 
         Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
         rb.isKinematic = !enable;
         rb.freezeRotation = !enable;
-    }
-
-    void OnCollisionEnter2D (Collision2D other) {
-        if (other.gameObject.tag == "Player") {
-            Player player = other.gameObject.GetComponent<Player>();
-            if (player.playerId != ownerId) {
-                print("//IGNORE!");
-                Physics2D.IgnoreCollision(GetComponent<BoxCollider2D>(), player.GetComponent<BoxCollider2D>());
-            }
-        }
     }
 
     public void reduceLife () {

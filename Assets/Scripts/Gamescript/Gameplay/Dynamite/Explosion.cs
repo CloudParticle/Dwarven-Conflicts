@@ -16,18 +16,17 @@ public class Explosion : MonoBehaviour {
         if (hitPlayer) {
             //Player hit by explosion.
             hitPlayer = false;
-            moveHitPlayer();
         }
 	}
 
     /**
      * Adds a force on player hit by the explosion.
      */
-    void moveHitPlayer () {
+    void moveHitPlayer (GameObject objectToPushAway) {
         float velocityX = Random.Range(-4f, 3f),
               velocityY = Random.Range(3f, 6f);
 
-        hitPlayerObj.GetComponent<Rigidbody2D>().AddForce(
+        objectToPushAway.GetComponent<Rigidbody2D>().AddForce(
             new Vector2(100f * velocityX, 200f * velocityY)
         );
         print("Player been hit by an explosion!");
@@ -37,7 +36,7 @@ public class Explosion : MonoBehaviour {
         Destroy(gameObject);
     }
 
-    void OnTriggerEnter2D (Collider2D other) {
+    void OnTriggerStay2D(Collider2D other) {
         if (other.gameObject.tag == "Platform") {
             Platform platform = other.gameObject.GetComponent<Platform>();
             platform.reduceLife();
@@ -47,6 +46,7 @@ public class Explosion : MonoBehaviour {
         if (other.gameObject.tag == "Player" || other.gameObject.tag == "Dynamite") {
             hitPlayerObj = other.gameObject;
             hitPlayer = true;
+            moveHitPlayer(hitPlayerObj);
         }
     }
 }

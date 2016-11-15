@@ -10,9 +10,11 @@ public class Player : MonoBehaviour {
 	private float accelerationTimeGrounded = 0.1f;
 	private float moveSpeed = 5f;
     private float spawnTime = 4f;
+    private int defaultLayer = 20;
+
 
     //Game variables
-	float gravity;
+    float gravity;
 	float jumpVelocity;
 	public Vector3 velocity;
 	float velocityXSmoothing;
@@ -159,7 +161,7 @@ public class Player : MonoBehaviour {
                 platformWrapper.transform.position.z
             ), transform.rotation) as GameObject;
 
-            tempPlatform.layer = 13;
+            tempPlatform.layer = defaultLayer + playerId;
             tempPlatform.GetComponent<Platform>().initPlatform(playerId);
         } else {
             print("Out of logs.");
